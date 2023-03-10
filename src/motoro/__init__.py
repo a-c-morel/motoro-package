@@ -4,7 +4,7 @@ from typing import Iterable, Literal
 from abc import ABC, abstractmethod
 import pygame
 from .entity_variable import EntityVariable
-
+from .stage_variable import StageVariable
 
 def better_controller_list()-> list["BetterController"]:
     """return a list of all the controllers connected to the computer"""
@@ -339,9 +339,9 @@ class GameBaseObject(ABC):
         """
         if not self.on_floor(blocs):
             if self.momentum_y == 0:
-                self.momentum_y = 1.1
+                self.momentum_y = 1.1 * StageVariable.gravity_strengh
             else:
-                self.momentum_y += 0.25
+                self.momentum_y += 0.25 * StageVariable.gravity_strengh
         elif self.momentum_y > 0:
             self.momentum_y = 0.0
 
@@ -528,11 +528,13 @@ class GameBaseEntity(GameBaseObject, EntityVariable, ABC):
             self.coords[0] = 500
             self.momentum_x = 0
 
-    def passive(self, blocs : list[GameBaseBloc]) -> None:
+    def passive(self, blocs : list[GameBaseBloc], clock : pygame.time.Clock) -> None:
         """
         all the 'passive' action of the entity
         like : loosing momentum, making him subjext to gravity
         """
+        if (clock.get_time()%StageVariable.wind_time+StageVariable.wind_cooldown) <= StageVariable.wind_time:
+            self.momentum_x += StageVariable.wind_strenght
         if self.momentum_x <= 1 and self.momentum_x >= -1:
             self.momentum_x = 0.0
         else:
