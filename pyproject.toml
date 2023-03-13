@@ -2,7 +2,7 @@
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 [project]
-name = "motoro_Noruaric"
+name = "motoro"
 requires-python = ">=3.10"
 version = "0.0.3a"
 authors = [
