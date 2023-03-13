@@ -2,12 +2,11 @@ import math
 from typing import Iterable, Literal
 from abc import ABC, abstractmethod
 import pygame
-from .entity_variable import EntityVariable
+from .entity_variable import GameRawEntity
 from .stage_variable import StageVariable
-from .game_base_object import GameBaseObject
 from .game_base_bloc import GameBaseBloc
 
-class GameBaseEntity(GameBaseObject, EntityVariable, ABC):
+class GameBaseEntity(GameRawEntity, ABC):
     """
     base class for game entity
     this class is abstract

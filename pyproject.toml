@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 [project]
 name = "motoro"
 requires-python = ">=3.10"
-version = "0.0.3a"
+version = "0.1.0 Candidate 1"
 authors = [
   { name="Noruaric", email="" },
 ]

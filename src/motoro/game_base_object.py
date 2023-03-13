@@ -2,6 +2,7 @@ from typing import Iterable, Literal
 from abc import ABC, abstractmethod
 import pygame
 from .stage_variable import StageVariable
+from .game_base_bloc import GameBaseBloc
 
 
 class GameBaseObject(ABC):
