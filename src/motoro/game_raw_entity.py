@@ -1,109 +1,85 @@
-import math
-from typing import Iterable, Literal
-from abc import ABC, abstractmethod
-import pygame
-from .entity_variable import GameRawEntity
-from .stage_variable import StageVariable
-from .game_base_bloc import GameBaseBloc
+from abc import ABC
+from .game_base_object import GameBaseObject
 
-class GameBaseEntity(GameRawEntity, ABC):
-    """
-    base class for game entity
-    this class is abstract
-    therfor you can never create an object with it !
-    """
-    def __init__(self, coords : Iterable) -> None:
-        self.momentum_x : float = 0.0
-        self.sprites : Iterable
-        super().__init__(coords)
+class GameRawEntity(GameBaseObject, ABC):
+    def __init_subclass__(self,
+            max_mometum_x : int = 4,
+            initial_value_mometum_x : int = -1.1,
+            increasse_mometum_x : int = 0.5,
+            loose_mometum_x : int = 0.25,
+            initial_jump_mometum : int = 1.36,
+            initial_jump_gain : int = 1.125,
+            increase_jump_gain : int = 0.125,
+            max_jump_gain : int = 1.5) -> None:
+        self.__max_mometum_x : int = max_mometum_x
+        self.__initial_value_mometum_x : int = initial_value_mometum_x
+        self.__increasse_mometum_x : int = increasse_mometum_x
+        self.__loose_mometum_x : int = loose_mometum_x
+        self.__initial_jump_mometum : int = initial_jump_mometum
+        self.__initial_jump_gain : int = initial_jump_gain
+        self.__increase_jump_gain : int = increase_jump_gain
+        self.__max_jump_gain : int = max_jump_gain
 
-    def go_left(self, blocs: list[GameBaseBloc]) -> None:
-        """make the entity go left and gain mometum"""
-        if self.coords[0] > 0:
-            self.old_coords[0] = self.coords[0]
-            if self.momentum_x == 0:
-                self.momentum_x = -self.initial_value_mometum_x
-            elif self.momentum_x > -self.max_mometum_x:
-                self.momentum_x -= self.increasse_mometum_x
-            self.coords[0] += int(self.momentum_x)
-            if self.coords[0] < 0:
-                self.coords[0] = 0
-                self.momentum_x = 0
-            self.__hitbox_calculation()
-            while True:
-                tmp = self.collision(blocs, bool(self.momentum_y<0))
-                if tmp[0]:
-                    return
-                self.coords[0] = tmp[1].right+1
-                self.momentum_x = 0
+    @property
+    def max_mometum_x(self)-> int:
+        return self.__max_mometum_x
 
-    def go_right(self, blocs) -> None:
-        """make the entity go right and gain mometum"""
-        if self.coords[0] < 500:
-            if self.momentum_x == 0:
-                self.momentum_x = self.initial_value_mometum_x
-            elif self.momentum_x < self.max_mometum_x:
-                self.momentum_x +=self.increasse_mometum_x
-            self.coords[0] += int(self.momentum_x)
-            if self.coords[0] > 500:
-                self.coords[0] = 500
-                self.momentum_x = 0
-            self.__hitbox_calculation()
-            while True:
-                tmp = self.collision(blocs, bool(self.momentum_y<0))
-                if tmp[0]:
-                    return
-                self.coords[0] = tmp[1].left - self.hitbox_dimension[0]-1
-                self.momentum_x = 0
+    @max_mometum_x.setter
+    def max_mometum_x(self, value: int)-> None:
+        self.__max_mometum_x = value
 
-    def sliding(self, blocs) -> None:
-        """make the entity 'slide' with mometum it as"""
-        if self.coords[0] < 500:
-            self.old_coords[0] = self.coords[0]
-            self.coords[0] += int(self.momentum_x)
-            self.__hitbox_calculation()
-            while True:
-                tmp = self.collision(blocs, bool(self.momentum_y<0))
-                if tmp[0]:
-                    return
-                self.coords[0] = tmp[1].left -self.hitbox_dimension[0]-1
-                self.momentum_x = 0
-        if self.coords[0] > 0:
-            self.old_coords[0] = self.coords[0]
-            self.coords[0] += int(self.momentum_x)
-            self.__hitbox_calculation()
-            while True:
-                tmp = self.collision(blocs, bool(self.momentum_y<0))
-                if tmp[0]:
-                    return
-                self.coords[0] = tmp[1].right+1
-                self.momentum_x = 0
-        if self.coords[0] < 0:
-            self.coords[0] = 0
-            self.momentum_x = 0
-        if self.coords[0] > 500:
-            self.coords[0] = 500
-            self.momentum_x = 0
+    @property
+    def initial_value_mometum_x(self)-> int:
+        return self.__initial_value_mometum_x
 
-    def passive(self, blocs : list[GameBaseBloc], clock : pygame.time.Clock) -> Literal[-1] | None:
-        """
-        all the 'passive' action of the entity
-        like : loosing momentum, making him subjext to gravity
-        """
-        if ((clock.get_time()%StageVariable.wind_time+StageVariable.wind_cooldown)
-            >= StageVariable.wind_cooldown):
-            self.momentum_x += StageVariable.wind_strenght
-        if self.momentum_x <= 1 and self.momentum_x >= -1:
-            self.momentum_x = 0.0
-        else:
-            self.momentum_x -= math.copysign(self.loose_mometum_x, self.momentum_x)
-        return super().base_passive(blocs)
+    @initial_value_mometum_x.setter
+    def initial_value_mometum_x(self, value: int)-> None:
+        self.__initial_value_mometum_x = value
 
-    @abstractmethod
-    def interaction(self, __o : 'GameBaseEntity'):
-        """a method to handle interaction with other entity (collission)"""
-        raise NotImplementedError
+    @property
+    def increasse_mometum_x(self)-> int:
+        return self.__increasse_mometum_x
 
-    def render(self, screen : pygame.surface.Surface) -> None:
-        """render the entity on the screen"""
-        screen.blit(self.sprites, self.coords)
+    @increasse_mometum_x.setter
+    def increasse_mometum_x(self, value)-> None:
+        self.__increasse_mometum_x = value
+
+    @property
+    def loose_mometum_x(self)-> int:
+        return self.__loose_mometum_x
+
+    @loose_mometum_x.setter
+    def loose_mometum_x(self, value: int)-> None:
+        self.__loose_mometum_x = value
+
+    @property
+    def initial_jump_mometum(self)-> int:
+        return self.__initial_jump_mometum
+
+    @initial_jump_mometum.setter
+    def initial_jump_mometum(self, value: int)-> None:
+        self.__initial_jump_mometum = value
+
+    @property
+    def initial_jump_gain(self)-> int:
+        return self.__initial_jump_gain
+
+    @initial_jump_gain.setter
+    def initial_jump_gain(self, value: int)-> None:
+        self.__initial_jump_gain = value
+
+    @property
+    def increase_jump_gain(self)-> int:
+        return self.__increase_jump_gain
+
+    @increase_jump_gain.setter
+    def increase_jump_gain(self, value: int)-> None:
+        self.__increase_jump_gain = value
+
+    @property
+    def max_jump_gain(self)-> int:
+        return self.__max_jump_gain
+
+    @max_jump_gain.setter
+    def max_jump_gain(self, value: int)-> None:
+        self.__max_jump_gain = value
