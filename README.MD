@@ -3,7 +3,9 @@
 this package as been made to handle a 2D game with pygame in python
 
 and can be installed with the following command :  \
-`pip git+https://github.com/Noruaric/project-trophy-motor-package.git`
+`python -m pip install "motoro @ git+https://github.com/Noruaric/project-trophy-motor-package@{commit_SHA}"`
+or
+`python -m pip install "motoro @ git+https://github.com/Noruaric/project-trophy-motor-package@{version_tag}"`
 
 Version note:
 
