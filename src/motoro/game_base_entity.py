@@ -29,7 +29,7 @@ class GameBaseEntity(GameRawEntity, ABC):
             if self.coords[0] < 0:
                 self.coords[0] = 0
                 self.momentum_x = 0
-            self.__hitbox_calculation()
+            self._hitbox_calculation()
             while True:
                 tmp = self.collision(blocs, bool(self.momentum_y<0))
                 if tmp[0]:
@@ -48,7 +48,7 @@ class GameBaseEntity(GameRawEntity, ABC):
             if self.coords[0] > 500:
                 self.coords[0] = 500
                 self.momentum_x = 0
-            self.__hitbox_calculation()
+            self._hitbox_calculation()
             while True:
                 tmp = self.collision(blocs, bool(self.momentum_y<0))
                 if tmp[0]:
@@ -61,7 +61,7 @@ class GameBaseEntity(GameRawEntity, ABC):
         if self.coords[0] < 500:
             self.old_coords[0] = self.coords[0]
             self.coords[0] += int(self.momentum_x)
-            self.__hitbox_calculation()
+            self._hitbox_calculation()
             while True:
                 tmp = self.collision(blocs, bool(self.momentum_y<0))
                 if tmp[0]:
@@ -71,7 +71,7 @@ class GameBaseEntity(GameRawEntity, ABC):
         if self.coords[0] > 0:
             self.old_coords[0] = self.coords[0]
             self.coords[0] += int(self.momentum_x)
-            self.__hitbox_calculation()
+            self._hitbox_calculation()
             while True:
                 tmp = self.collision(blocs, bool(self.momentum_y<0))
                 if tmp[0]:

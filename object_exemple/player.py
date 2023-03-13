@@ -10,7 +10,7 @@ class Player(GameBaseEntity):
         self.sprites = sprites
         self.jump_lock=False
         self.gain_vector_y : float = 0.0
-        self.__hitbox = hitbox_dimension #pylint: disable=unused-private-member
+        self.hitbox = hitbox_dimension #pylint: disable=unused-private-member
         super().__init__(coords)
         super().__init_subclass__()
 

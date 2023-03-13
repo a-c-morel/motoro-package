@@ -10,21 +10,21 @@ class GameBaseBloc(GameBaseObject, ABC):
     therfor you can never create an object with it !
     """
     def __init__(self, coords : Iterable) -> None:
-        self.__semi_solid: bool
-        self.__is_tangible : bool
-        self.__is_subject_to_gravity : bool
+        self._semi_solid: bool
+        self._is_tangible : bool
+        self._is_subject_to_gravity : bool
         self.sprites : Iterable
         super().__init__(coords)
 
     @property
     def semisolid(self) -> bool:
         """if the bloc is a semi solid (you can go throught if you jump)"""
-        return self.__semi_solid
+        return self._semi_solid
 
     @property
     def tangible(self) -> bool:
         """return True if the object as collision"""
-        return self.__is_tangible
+        return self._is_tangible
 
     @property
     def gravity_mode(self) -> tuple[int, int]:
@@ -34,7 +34,7 @@ class GameBaseBloc(GameBaseObject, ABC):
         H_y represent the height of the hitbox
         note: the hitbox is always a rectengle
         """
-        return self.__is_subject_to_gravity
+        return self._is_subject_to_gravity
 
     @gravity_mode.setter
     def gravity_mode(self, arg : bool) -> None:
@@ -44,7 +44,7 @@ class GameBaseBloc(GameBaseObject, ABC):
         H_y represent the height of the hitbox
         note: the hitbox is always a rectangle
         """
-        self.__is_subject_to_gravity = arg
+        self._is_subject_to_gravity = arg
 
     def passive(self, blocs: list['GameBaseBloc'])  -> Literal[-1] | None:
         """
