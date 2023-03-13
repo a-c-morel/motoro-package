@@ -2,22 +2,21 @@
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 [project]
-name = "motoro"
-version = "0.0.2b"
+name = "motoro_Noruaric"
+requires-python = ">=3.10"
+version = "0.0.3a"
 authors = [
   { name="Noruaric", email="" },
 ]
 description = "A 'engine' for 2D game in pygame"
 readme = "README.md"
-requires-python = ">=3.10"
 license = {text = "GPL-3.0-or-later"}
 classifiers = [
     "Programming Language :: Python :: 3",
     "Operating System :: OS Independent",
 ]
 dependencies = [
-    "pygame <"2.1.2",
-    'python_version<="3.10"',
+    'pygame >= 2.1.2, <3',
 ]
 [project.urls]
 "Homepage" = ""
