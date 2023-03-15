@@ -66,8 +66,9 @@ class GameBaseEntity(GameRawEntity, ABC):
                 tmp = self.collision(blocs, bool(self.momentum_y<0))
                 if tmp[0]:
                     return
-                self.coords[0] = tmp[1].left -self.hitbox_dimension[0]-1
+                self.coords[0] = tmp[1].left -self.hitbox_dimension[0]
                 self.momentum_x = 0
+                self._hitbox_calculation()
         if self.coords[0] > 0:
             self.old_coords[0] = self.coords[0]
             self.coords[0] += int(self.momentum_x)
@@ -76,8 +77,9 @@ class GameBaseEntity(GameRawEntity, ABC):
                 tmp = self.collision(blocs, bool(self.momentum_y<0))
                 if tmp[0]:
                     return
-                self.coords[0] = tmp[1].right+1
+                self.coords[0] = tmp[1].right
                 self.momentum_x = 0
+                self._hitbox_calculation()
         if self.coords[0] < 0:
             self.coords[0] = 0
             self.momentum_x = 0

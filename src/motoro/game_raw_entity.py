@@ -4,7 +4,7 @@ from .game_base_object import GameBaseObject
 class GameRawEntity(GameBaseObject, ABC):
     def __init_subclass__(self,
             max_mometum_x : int = 4,
-            initial_value_mometum_x : int = -1.1,
+            initial_value_mometum_x : int = 1.1,
             increasse_mometum_x : int = 0.5,
             loose_mometum_x : int = 0.25,
             initial_jump_mometum : int = 1.36,

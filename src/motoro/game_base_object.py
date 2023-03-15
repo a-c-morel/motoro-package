@@ -3,7 +3,6 @@ from abc import ABC, abstractmethod
 import pygame
 from .stage_variable import StageVariable
 
-
 class GameBaseObject(ABC):
     """
     base class for game object
@@ -60,7 +59,7 @@ class GameBaseObject(ABC):
         for b in blocs:
             if not b.tangible or self is b:
                 continue
-            if b.rect_hitbox.top == self.rect_hitbox.bottom -1:
+            if b.rect_hitbox.top == self.rect_hitbox.bottom:
                 self.has_jumped = False
                 return True
         return False
@@ -86,7 +85,7 @@ class GameBaseObject(ABC):
         """
         self._gravity(blocs)
         if self.momentum_y != 0:
-            self.has_jumped:bool(self.momentum_y<0 or self.has_jumped)
+            self.has_jumped=bool(self.momentum_y<0 or self.has_jumped)
             self.old_coords[1] = self.coords[1]
             self.coords[1] += self.momentum_y
             self._hitbox_calculation()
@@ -97,8 +96,19 @@ class GameBaseObject(ABC):
                         return None
                     if tmp[1] == -1:
                         return -1 #todo death
-                    self.coords[1] = tmp[1].bottom+1
+                    self.coords[1] = tmp[1].bottom
                     self.momentum_y = 0
+                    self._hitbox_calculation()
+            if self.momentum_y>0:
+                while True:
+                    tmp = self.collision(blocs,self.has_jumped)
+                    if tmp[0]:
+                        return None
+                    if tmp[1] == -1:
+                        return -1 #todo death
+                    self.coords[1] = tmp[1].top-self.hitbox_dimension[1]
+                    self.momentum_y = 0
+                    self._hitbox_calculation()
         if self.momentum_y <= 1 and self.momentum_y >= -1:
             self.momentum_y = 0.0
         self._old_rect_hitbox = self._rect_hitbox
