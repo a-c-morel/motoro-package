@@ -19,73 +19,71 @@ class GameBaseEntity(GameRawEntity, ABC):
 
     def go_left(self, blocs: list[GameBaseBloc]) -> None:
         """make the entity go left and gain mometum"""
-        if self.coords[0] > 0:
-            self.old_coords[0] = self.coords[0]
-            if self.momentum_x == 0:
-                self.momentum_x = -self.initial_value_mometum_x
-            elif self.momentum_x > -self.max_mometum_x:
-                self.momentum_x -= self.increasse_mometum_x
-            self.coords[0] += int(self.momentum_x)
-            if self.coords[0] < 0:
-                self.coords[0] = 0
-                self.momentum_x = 0
-            self._hitbox_calculation()
-            while True:
-                tmp = self.collision(blocs, bool(self.momentum_y<0))
-                if tmp[0]:
-                    return
-                self.coords[0] = tmp[1].right+1
-                self.momentum_x = 0
-
-    def go_right(self, blocs) -> None:
-        """make the entity go right and gain mometum"""
-        if self.coords[0] < 500:
-            if self.momentum_x == 0:
-                self.momentum_x = self.initial_value_mometum_x
-            elif self.momentum_x < self.max_mometum_x:
-                self.momentum_x +=self.increasse_mometum_x
-            self.coords[0] += int(self.momentum_x)
-            if self.coords[0] > 500:
-                self.coords[0] = 500
-                self.momentum_x = 0
-            self._hitbox_calculation()
-            while True:
-                tmp = self.collision(blocs, bool(self.momentum_y<0))
-                if tmp[0]:
-                    return
-                self.coords[0] = tmp[1].left - self.hitbox_dimension[0]-1
-                self.momentum_x = 0
-
-    def sliding(self, blocs) -> None:
-        """make the entity 'slide' with mometum it as"""
-        if self.coords[0] < 500:
-            self.old_coords[0] = self.coords[0]
-            self.coords[0] += int(self.momentum_x)
-            self._hitbox_calculation()
-            while True:
-                tmp = self.collision(blocs, bool(self.momentum_y<0))
-                if tmp[0]:
-                    return
-                self.coords[0] = tmp[1].left -self.hitbox_dimension[0]
-                self.momentum_x = 0
-                self._hitbox_calculation()
-        if self.coords[0] > 0:
-            self.old_coords[0] = self.coords[0]
-            self.coords[0] += int(self.momentum_x)
-            self._hitbox_calculation()
-            while True:
-                tmp = self.collision(blocs, bool(self.momentum_y<0))
-                if tmp[0]:
-                    return
-                self.coords[0] = tmp[1].right
-                self.momentum_x = 0
-                self._hitbox_calculation()
+        self.old_coords[0] = self.coords[0]
+        if self.momentum_x == 0:
+            self.momentum_x = -self.initial_value_mometum_x
+        elif self.momentum_x > -self.max_mometum_x:
+            self.momentum_x -= self.increasse_mometum_x
+        self.coords[0] += int(self.momentum_x)
         if self.coords[0] < 0:
             self.coords[0] = 0
             self.momentum_x = 0
+        self._hitbox_calculation()
+        while True:
+            tmp = self.collision(blocs, bool(self.momentum_y<0))
+            if tmp[0]:
+                return
+            if tmp[1] == -1:
+                return
+            self.coords[0] = tmp[1].right+1
+            self.momentum_x = 0
+
+    def go_right(self, blocs) -> None:
+        """make the entity go right and gain mometum"""
+        if self.momentum_x == 0:
+            self.momentum_x = self.initial_value_mometum_x
+        elif self.momentum_x < self.max_mometum_x:
+            self.momentum_x +=self.increasse_mometum_x
+        self.coords[0] += int(self.momentum_x)
         if self.coords[0] > 500:
             self.coords[0] = 500
             self.momentum_x = 0
+        self._hitbox_calculation()
+        while True:
+            tmp = self.collision(blocs, bool(self.momentum_y<0))
+            if tmp[0]:
+                return
+            if tmp[1] == -1:
+                return
+            self.coords[0] = tmp[1].left - self.hitbox_dimension[0]-1
+            self.momentum_x = 0
+
+    def sliding(self, blocs) -> None:
+        """make the entity 'slide' with mometum it as"""
+        self.old_coords[0] = self.coords[0]
+        self.coords[0] += int(self.momentum_x)
+        self._hitbox_calculation()
+        while True:
+            tmp = self.collision(blocs, bool(self.momentum_y<0))
+            if tmp[0]:
+                break
+            if tmp[1] == -1:
+                return
+            self.coords[0] = tmp[1].left -self.hitbox_dimension[0]
+            self.momentum_x = 0
+            self._hitbox_calculation()
+        self.old_coords[0] = self.coords[0]
+        self.coords[0] += int(self.momentum_x)
+        self._hitbox_calculation()
+        while True:
+            tmp = self.collision(blocs, bool(self.momentum_y<0))
+            if tmp[0]:
+                break
+            if tmp[1] == -1:
+                return
+            self.coords[0] = tmp[1].right
+            self.momentum_x = 0
+            self._hitbox_calculation()
 
     def passive(self, blocs : list[GameBaseBloc], clock : pygame.time.Clock) -> Literal[-1] | None:
         """
