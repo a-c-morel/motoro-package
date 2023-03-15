@@ -1,6 +1,7 @@
 from abc import ABC
+from .game_base_object import GameBaseObject
 
-class EntityVariable(ABC):
+class GameRawEntity(GameBaseObject, ABC):
     def __init_subclass__(self,
             max_mometum_x : int = 4,
             initial_value_mometum_x : int = -1.1,
