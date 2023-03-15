@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 [project]
 name = "motoro"
 requires-python = ">=3.10"
-version = "0.1.0c1"
+version = "0.1.0"
 authors = [
   { name="Noruaric", email="" },
 ]
@@ -19,5 +19,5 @@ dependencies = [
     'pygame >= 2.1.2, <3',
 ]
 [project.urls]
-"Homepage" = ""
-"Bug Tracker" = ""
+"Homepage" = "https://github.com/Noruaric/project-trophy-motoro-package"
+"Bug Tracker" = "https://github.com/Noruaric/project-trophy-motoro-package/issues"

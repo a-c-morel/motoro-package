@@ -1,4 +1,4 @@
-# motor package
+# motoro package
 
 this package as been made to handle a 2D game with pygame in python
 
@@ -13,3 +13,4 @@ Version note:
 0.0.2a: adding multuple feature  \
 0.0.2b: reorganisation of the package do make it better to read and use  \
 0.0.3a: adding stage_variable, entity_variable, improved readibility, updating README
+0.1.0: fixing a bug (member was private instead of protected) and fixed missing parenteis

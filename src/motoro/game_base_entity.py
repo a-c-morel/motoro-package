@@ -90,7 +90,7 @@ class GameBaseEntity(GameRawEntity, ABC):
         all the 'passive' action of the entity
         like : loosing momentum, making him subjext to gravity
         """
-        if ((clock.get_time()%StageVariable.wind_time+StageVariable.wind_cooldown)
+        if (clock.get_time()%(StageVariable.wind_time+StageVariable.wind_cooldown)
             >= StageVariable.wind_cooldown):
             self.momentum_x += StageVariable.wind_strenght
         if self.momentum_x <= 1 and self.momentum_x >= -1:
