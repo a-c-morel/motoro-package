@@ -11,7 +11,7 @@ class GameBaseObject(ABC):
     therfor you can never create an object with it !
     """
     def __init__(self, coords : Iterable[int]) -> None:
-        if not isinstance(coords, tuple) and not isinstance(coords, tuple):
+        if not isinstance(coords, tuple) and not isinstance(coords, list):
             raise TypeError(f'coords should be Iterable object got {type(coords)}')
         if i:=len(coords) != 2:
             raise ValueError(f'coords should have 2 element got {i}')
@@ -152,7 +152,7 @@ class GameBaseObject(ABC):
         if not isinstance(is_jumping, bool):
             raise TypeError(f'is_jumping should be a boolean got {type(is_jumping)}')
         for i in blocs:
-            if not i.tangible or (is_jumping and i.semisolid) or i.dead:
+            if not i.tangible or (is_jumping and i.semisolid) or i.is_dead:
                 continue
             if i.rect_hitbox.colliderect(self._rect_hitbox):
                 if i.rect_hitbox.colliderect(self._old_rect_hitbox):

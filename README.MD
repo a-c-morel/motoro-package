@@ -15,3 +15,4 @@ Version note:
 0.0.3a: adding stage_variable, entity_variable, improved readibility, updating README
 0.1.0: fixing a bug (member was private instead of protected) and fixed missing parenteis
 1.0.0: added some verification, removed old code, and improve type hint
+1.0.1: added a offset option for the render method of GameBaseBloc and GameBaseEntity, fixed a small issue, updated the doc

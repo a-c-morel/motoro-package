@@ -11,7 +11,7 @@ class GameBaseBloc(GameBaseObject, ABC):
     therfor you can never create an object with it !
     """
     def __init__(self, coords : Iterable[int]) -> None:
-        if not isinstance(coords, tuple) and not isinstance(coords, tuple):
+        if not isinstance(coords, tuple) and not isinstance(coords, list):
             raise TypeError(f'coords should be Iterable object got {type(coords)}')
         if i:=len(coords) != 2:
             raise ValueError(f'coords should have 2 element got {i}')
@@ -85,8 +85,12 @@ class GameBaseBloc(GameBaseObject, ABC):
             return None
         return super().base_passive(blocs)
 
-    def render(self, screen : pygame.surface.Surface) -> None:
-        """render the entity on the screen"""
+    def render(self, screen : pygame.surface.Surface, offset_x : int = 0, offset_y : int = 0) -> None:
+        """render the bloc on the screen"""
         if not isinstance(screen, pygame.surface.Surface):
             raise TypeError(f'screen should be a pygame.surface.Surface object got {type(screen)}')
-        screen.blit(self.current_frame, self.coords)
+        if not isinstance(offset_x, int):
+            raise TypeError(f'offset_x should be a int object got {type(offset_x)}')
+        if not isinstance(offset_y, int):
+            raise TypeError(f'offset_x should be a int object got {type(offset_y)}')
+        screen.blit(self.current_frame, (self.coords[0] + offset_x, self.coords[1] + offset_y))
