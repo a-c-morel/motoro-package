@@ -1,3 +1,7 @@
+"""
+this module contain the class for better controller
+which help to handle pygame.joystick.Joystick object
+"""
 import pygame
 
 CONTROLLERS_TYPES_LIST = ["NX_CONTROLLER",
@@ -8,7 +12,9 @@ CONTROLLERS_TYPES_LIST = ["NX_CONTROLLER",
 
 class BetterController():
     """a class made to handle controllers with pygame in a more simple way"""
-    def __init__(self, controller : pygame.joystick.Joystick) -> None:
+    def __init__(self, controller : pygame.joystick.JoystickType) -> None:
+        if not isinstance(controller, pygame.joystick.JoystickType):
+            raise TypeError(f'controller should be JoystickType object got {type(controller)}')
         self.control = controller
         self.__name = controller.get_name()
         self.__has_hat = controller.get_numhats != 0
@@ -38,6 +44,11 @@ class BetterController():
 
     def is_pressed(self, button : int) -> bool:
         """return the current state of a button"""
+        if not isinstance(button, int):
+            raise TypeError(f'button should be a int object got {type(button)}')
+        if (i:=self.control.get_numbuttons()) > button or button < 0:
+            raise TypeError(
+                f'button should be > 0 and < {i} got {button}')
         return self.control.get_button(button)
 
     def button_A_is_pressed(self) -> bool: #pylint: disable=invalid-name
@@ -173,16 +184,16 @@ class BetterController():
                 res = self.is_pressed(9)
         return res
 
-    def get_dpad_status(self) -> tuple[float, float]:
+    def get_dpad_status(self) -> list[float]:
         """
         return a tuple with the current state of the d-pad
         [0] : left -> right
         [1] : up -> down
         """
         if self.__has_hat:
-            res = self.control.get_hat(0)
-            return -res[0], res[1]
-        res: list[float, float] = [0.0, 0.0]
+            res = list(self.control.get_hat(0))
+            return [-res[0], res[1]]
+        res: list[float] = [0.0, 0.0]
         match self.__type:
             case "NX_CONTROLLER":
                 if self.is_pressed(0):
@@ -205,7 +216,7 @@ class BetterController():
                     res[0]+=1
             case _:
                 print("NO HAT AVIABLE !")
-        return tuple(res)
+        return res
 
     def get_left_stick_status(self) -> tuple[float, float]:
         """

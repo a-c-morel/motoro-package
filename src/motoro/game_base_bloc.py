@@ -1,4 +1,5 @@
-from typing import Iterable, Literal
+"""this module contain the base class for blocks aka not alive object"""
+from typing import Iterable, Literal, Any
 from abc import ABC
 import pygame
 from .game_base_object import GameBaseObject
@@ -9,11 +10,24 @@ class GameBaseBloc(GameBaseObject, ABC):
     this class is abstract
     therfor you can never create an object with it !
     """
-    def __init__(self, coords : Iterable) -> None:
+    def __init__(self, coords : Iterable[int]) -> None:
+        if not isinstance(coords, tuple) and not isinstance(coords, tuple):
+            raise TypeError(f'coords should be Iterable object got {type(coords)}')
+        if i:=len(coords) != 2:
+            raise ValueError(f'coords should have 2 element got {i}')
+        if not isinstance(coords[0], int) or not isinstance(coords[1], int):
+            raise TypeError(
+                f'coords should only conataint int object got \
+                    {type(coords[0])} and {type(coords[1])}')
+        if coords[0] < 0 or coords[1] < 0:
+            raise TypeError(
+                f'coords should only conataint int object >= 0 got {coords[0]} and {coords[1]}')
         self._semi_solid: bool
         self._is_tangible : bool
         self._is_subject_to_gravity : bool
-        self.sprites : Iterable
+        self.sprites : Iterable | Any
+        self.current_frame : pygame.surface.Surface
+        self.ignore_bloc_collision : bool
         super().__init__(coords)
 
     @property
@@ -27,7 +41,7 @@ class GameBaseBloc(GameBaseObject, ABC):
         return self._is_tangible
 
     @property
-    def gravity_mode(self) -> tuple[int, int]:
+    def gravity_mode(self) -> bool:
         """
         redefine the hitbox
         W_x represent the width of the hitbox
@@ -44,17 +58,35 @@ class GameBaseBloc(GameBaseObject, ABC):
         H_y represent the height of the hitbox
         note: the hitbox is always a rectangle
         """
+        if not isinstance(arg, bool):
+            raise TypeError(f'arg should be a boolean got {type(arg)}')
         self._is_subject_to_gravity = arg
+
+    def death_seqeunce(self, origin: str):
+        """this function handle the death of a object"""
+        if not isinstance(origin, str):
+            raise TypeError(f'origin should be a boolean got {type(origin)}')
+        if origin == 'crush' and not self.ignore_bloc_collision:
+            self.is_dead = True #pylint: disable=attribute-defined-outside-init
+            return
+        raise ValueError(f'unregonized death origin got {origin}')
 
     def passive(self, blocs: list['GameBaseBloc'])  -> Literal[-1] | None:
         """
         all the 'passive' action of the bloc
         like : loosing momentum, making him subjext to gravity
         """
+        if not isinstance(blocs, list):
+            raise TypeError(f'block should be a list object got {type(blocs)}')
+        for i in blocs:
+            if not isinstance(i, GameBaseBloc):
+                raise TypeError(f'block should only contain GameBaseBloc instance got {type(i)}')
         if not self.gravity_mode:
-            return
+            return None
         return super().base_passive(blocs)
 
     def render(self, screen : pygame.surface.Surface) -> None:
         """render the entity on the screen"""
-        screen.blit(self.sprites, self.coords)
+        if not isinstance(screen, pygame.surface.Surface):
+            raise TypeError(f'screen should be a pygame.surface.Surface object got {type(screen)}')
+        screen.blit(self.current_frame, self.coords)
