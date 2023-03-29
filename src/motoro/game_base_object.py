@@ -10,6 +10,12 @@ class GameBaseObject(ABC):
     this class is abstract
     therfor you can never create an object with it !
     """
+
+    def __new__(cls):
+        if cls is GameBaseObject:
+            raise TypeError("the abstarct class GameBaseObject can't be instancied.")
+        super().__new__(cls)
+
     def __init__(self, coords : Iterable[int]) -> None:
         if not isinstance(coords, tuple) and not isinstance(coords, list):
             raise TypeError(f'coords should be Iterable object got {type(coords)}')
@@ -112,7 +118,7 @@ class GameBaseObject(ABC):
     def base_passive(self, blocs: list) -> Literal[-1] | None:
         """
         all the 'passive' action of the object
-        like : loosing momentum, making him subjext to gravity
+        like : loosing momentum, making him subject to gravity
         """
         self._gravity(blocs)
         if self.momentum_y != 0:

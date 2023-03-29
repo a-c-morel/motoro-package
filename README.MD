@@ -16,3 +16,4 @@ Version note:
 0.1.0: fixing a bug (member was private instead of protected) and fixed missing parenteis
 1.0.0: added some verification, removed old code, and improve type hint
 1.0.1: added a offset option for the render method of GameBaseBloc and GameBaseEntity, fixed a small issue, updated the doc
+1.1.0: improved reatibility and made the package compatible with python 3.8 and above (was compatible only with python 3.10 and above)

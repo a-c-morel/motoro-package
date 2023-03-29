@@ -13,6 +13,12 @@ class GameBaseEntity(GameRawEntity, ABC):
     this class is abstract
     therfor you can never create an object with it !
     """
+
+    def __new__(cls):
+        if cls is GameBaseEntity:
+            raise TypeError("the abstarct class GameBaseEntity can't be instancied.")
+        super().__new__(cls)
+
     def __init__(self, coords : Iterable[int]) -> None:
         if not isinstance(coords, tuple) and not isinstance(coords, list):
             raise TypeError(f'coords should be Iterable object got {type(coords)}')
@@ -125,7 +131,7 @@ class GameBaseEntity(GameRawEntity, ABC):
                 raise TypeError(f'block should only contain GameBaseBloc instance got {type(i)}')
         if i:=StageVariable.wind_time+StageVariable.wind_cooldown != 0:
             if clock.get_time()%i >= StageVariable.wind_cooldown:
-                self.momentum_x += StageVariable.wind_strenght
+                self.momentum_x += StageVariable.wind_strength
         if self.momentum_x <= 1 and self.momentum_x >= -1:
             self.momentum_x = 0.0
         else:

@@ -18,20 +18,20 @@ class BetterController():
         self.control = controller
         self.__name = controller.get_name()
         self.__has_hat = controller.get_numhats != 0
-        match self.__name:
-            case "Wireless Gamepad":
-                print("WARNING JOYCONS DO NOT WORK AS INTENDED !")
-                print("WARNING JOYCONS JOYSTICK DO NOT WORK !")
-                self.__type = "NX_CONTROLLER"
-            case "Nintendo Switch Pro Controller":
-                self.__type = "NX_PRO_CONTROLLER"
-            case "Xbox 360 Controller":
-                self.__type = "X360_CONTROLLER"
-            case "PS4 Controller":
-                self.__type = "PS4_CONTROLLER"
-            case _:
-                print("WARNING THIS CONTROLLER MAY NOT WORK AS INTENDED !")
-                self.__type = "UNRECONIZABLE"
+        if self.__name == "Wireless Gamepad":
+            print("WARNING JOYCONS DO NOT WORK AS INTENDED !")
+            print("WARNING JOYCONS JOYSTICK DO NOT WORK !")
+            self.__type = "NX_CONTROLLER"
+        elif self.__name == "Nintendo Switch Pro Controller":
+            self.__type = "NX_PRO_CONTROLLER"
+        elif self.__name == "Xbox 360 Controller":
+            self.__type = "X360_CONTROLLER"
+        elif self.__name == "PS4 Controller":
+            self.__type = "PS4_CONTROLLER"
+        else:
+            print("WARNING THIS CONTROLLER MAY NOT WORK AS INTENDED !")
+            self.__type = "UNRECONIZABLE"
+
 
     @staticmethod
     def get_better_controller_list()-> list["BetterController"]:
@@ -42,14 +42,14 @@ class BetterController():
             tmp.append(BetterController(pygame.joystick.Joystick(i)))
         return tmp
 
-    def is_pressed(self, button : int) -> bool:
+    def is_pressed(self, button_index : int) -> bool:
         """return the current state of a button"""
-        if not isinstance(button, int):
-            raise TypeError(f'button should be a int object got {type(button)}')
-        if (i:=self.control.get_numbuttons()) > button or button < 0:
+        if not isinstance(button_index, int):
+            raise TypeError(f'button should be a int object got {type(button_index)}')
+        if (num_buttons := self.control.get_numbuttons()) > button_index or button_index < 0:
             raise TypeError(
-                f'button should be > 0 and < {i} got {button}')
-        return self.control.get_button(button)
+                f'button should be > 0 and < {num_buttons} got {button_index}')
+        return self.control.get_button(button_index)
 
     def button_A_is_pressed(self) -> bool: #pylint: disable=invalid-name
         """
@@ -85,30 +85,26 @@ class BetterController():
         return the current state of the left bumber
         SL on NX_CONTROLLER
         """
-        match self.__type:
-            case "NX_CONTROLLER" | "X360_CONTROLLER":
-                res = self.is_pressed(4)
-            case "NX_PRO_CONTROLLER" | "PS4_CONTROLLER":
-                res = self.is_pressed(9)
-            case _:
-                print("TRYING BUTTON 4")
-                res = self.is_pressed(4)
-        return res
+        if self.__type in ["NX_CONTROLLER", "X360_CONTROLLER"]:
+            return self.is_pressed(4)
+        if self.__type in ["NX_PRO_CONTROLLER", "PS4_CONTROLLER"]:
+            return self.is_pressed(9)
+        print("TRYING BUTTON 4")
+        return self.is_pressed(4)
+
 
     def right_bumber_is_pressed(self) -> bool:
         """
         return the current state of the left bumber
         SR on NX_CONTROLLER
         """
-        match self.__type:
-            case "NX_CONTROLLER" | "X360_CONTROLLER":
-                res = self.is_pressed(5)
-            case "NX_PRO_CONTROLLER" | "PS4_CONTROLLER":
-                res = self.is_pressed(10)
-            case _:
-                print("TRYING BUTTON 5")
-                res = self.is_pressed(5)
-        return res
+        if self.__type in ["NX_CONTROLLER", "X360_CONTROLLER"]:
+            return self.is_pressed(4)
+        if self.__type == ["NX_PRO_CONTROLLER", "PS4_CONTROLLER"]:
+            return self.is_pressed(9)
+        print("TRYING BUTTON 4")
+        return self.is_pressed(4)
+
 
     def back_button_is_pressed(self) -> bool:
         """
@@ -118,18 +114,15 @@ class BetterController():
         - button on NX_PRO_CONTROLLER
         not aviable with NX_CONTROLLER
         """
-        match self.__type:
-            case "NX_CONTROLLER":
-                print("not aviable")
-                res = False
-            case "X360_CONTROLLER":
-                res = self.is_pressed(6)
-            case "NX_PRO_CONTROLLER" | "PS4_CONTROLLER":
-                res = self.is_pressed(4)
-            case _:
-                print("TRYING BUTTON 6")
-                res = self.is_pressed(6)
-        return res
+        if self.__type == "NX_CONTROLLER":
+            print("not available")
+            return False
+        if self.__type == "X360_CONTROLLER":
+            return self.is_pressed(6)
+        if self.__type in ["NX_PRO_CONTROLLER", "PS4_CONTROLLER"]:
+            return self.is_pressed(4)
+        print("TRYING BUTTON 6")
+        return self.is_pressed(6)
 
     def start_button_is_pressed(self) -> bool:
         """
@@ -138,51 +131,44 @@ class BetterController():
         option button on PS4-CONTROLLER
         + button on NX_PRO_CONTROLLER and NX_CONTROLLER
         """
-        match self.__type:
-            case "NX_CONTROLLER":
-                res = self.is_pressed(8)
-            case "X360_CONTROLLER":
-                res = self.is_pressed(7)
-            case "NX_PRO_CONTROLLER" | "PS4_CONTROLLER":
-                res = self.is_pressed(6)
-            case _:
-                print("TRYING BUTTON 7")
-                res = self.is_pressed(7)
-        return res
+        if self.__type == "NX_CONTROLLER":
+            return self.is_pressed(8)
+        if self.__type == "X360_CONTROLLER":
+            return self.is_pressed(7)
+        if self.__type in ["NX_PRO_CONTROLLER", "PS4_CONTROLLER"]:
+            return self.is_pressed(6)
+        print("TRYING BUTTON 7")
+        return self.is_pressed(7)
+
 
     def left_stick_is_pressed(self) -> bool:
         """
         return if the left joystick is pressed
         LS and RS are mixed on NX_CONTROLLER
         """
-        match self.__type:
-            case "NX_CONTROLLER":
-                res = self.is_pressed(11)
-            case "X360_CONTROLLER":
-                res = self.is_pressed(8)
-            case "NX_PRO_CONTROLLER" | "PS4_CONTROLLER":
-                res = self.is_pressed(7)
-            case _:
-                print("TRYING BUTTON 8")
-                res = self.is_pressed(8)
-        return res
+        if self.__type == "NX_CONTROLLER":
+            return self.is_pressed(11)
+        if self.__type == "X360_CONTROLLER":
+            return self.is_pressed(8)
+        if self.__type in ["NX_PRO_CONTROLLER", "PS4_CONTROLLER"]:
+            return self.is_pressed(7)
+        print("TRYING BUTTON 8")
+        return self.is_pressed(8)
+
 
     def right_stick_is_pressed(self) -> bool:
         """
         return if the left joystick is pressed
         LS and RS are mixed on NX_CONTROLLER
         """
-        match self.__type:
-            case "NX_CONTROLLER":
-                res = self.is_pressed(11)
-            case "X360_CONTROLLER":
-                res = self.is_pressed(9)
-            case "NX_PRO_CONTROLLER" | "PS4_CONTROLLER":
-                res = self.is_pressed(8)
-            case _:
-                print("TRYING BUTTON 9")
-                res = self.is_pressed(9)
-        return res
+        if self.__type in ["NX_PRO_CONTROLLER", "PS4_CONTROLLER"]:
+            return self.is_pressed(8)
+        if self.__type == "NX_CONTROLLER":
+            return self.is_pressed(11)
+        if self.__type == "X360_CONTROLLER":
+            return self.is_pressed(9)
+        print("TRYING BUTTON 9")
+        return self.is_pressed(9)
 
     def get_dpad_status(self) -> list[float]:
         """
@@ -194,28 +180,27 @@ class BetterController():
             res = list(self.control.get_hat(0))
             return [-res[0], res[1]]
         res: list[float] = [0.0, 0.0]
-        match self.__type:
-            case "NX_CONTROLLER":
-                if self.is_pressed(0):
-                    res[1]-=1
-                if self.is_pressed(1):
-                    res[1]+=1
-                if self.is_pressed(2):
-                    res[0]-=1
-                if self.is_pressed(3):
-                    res[0]+=1
-
-            case "PS4_CONTROLLER" | "NX_PRO_CONTROLLER":
-                if self.is_pressed(11):
-                    res[1]-=1
-                if self.is_pressed(12):
-                    res[1]+=1
-                if self.is_pressed(13):
-                    res[0]-=1
-                if self.is_pressed(14):
-                    res[0]+=1
-            case _:
-                print("NO HAT AVIABLE !")
+        if self.__type == "NX_CONTROLLER":
+            up_button = 0
+            down_button = 1
+            left_button = 2
+            right_button = 3
+        elif self.__type in ["PS4_CONTROLLER", "NX_PRO_CONTROLLER"]:
+            up_button = 11
+            down_button = 12
+            left_button = 13
+            right_button = 14
+        else:
+            print("NO HAT AVAILABLE !")
+            return res
+        if self.is_pressed(up_button):
+            res[1]-=1
+        if self.is_pressed(down_button):
+            res[1]+=1
+        if self.is_pressed(left_button):
+            res[0]-=1
+        if self.is_pressed(right_button):
+            res[0]+=1
         return res
 
     def get_left_stick_status(self) -> tuple[float, float]:
@@ -234,13 +219,12 @@ class BetterController():
         [0] : left -> right
         [1] : up -> down
         """
-        match self.__type:
-            case "NX_CONTROLLER":
-                return 0.0 , 0.0
-            case "X360_CONTROLLER":
-                return self.control.get_axis(3), self.control.get_axis(4)
-            case _:
-                return self.control.get_axis(2), self.control.get_axis(3)
+        if self.__type == "NX_CONTROLLER":
+            return 0.0, 0.0
+        if self.__type == "X360_CONTROLLER":
+            return self.control.get_axis(3), self.control.get_axis(4)
+        return self.control.get_axis(2), self.control.get_axis(3)
+
 
     def get_left_trigger_status(self) -> float:
         """
@@ -248,15 +232,14 @@ class BetterController():
         out -> in
         ZR and ZL are mixed on NX_CONTROLLER and are either 1.0 or 0.0
         """
-        match self.__type:
-            case "NX_CONTROLLER":
-                if self.is_pressed(15):
-                    return 1.0
-                return 0.0
-            case "X360_CONTROLLER":
-                return self.control.get_axis(2)
-            case _:
-                return self.control.get_axis(4)
+        if self.__type == "NX_CONTROLLER":
+            if self.is_pressed(15):
+                return 1.0
+            return 0.0
+        if self.__type == "X360_CONTROLLER":
+            return self.control.get_axis(2)
+        return self.control.get_axis(4)
+
 
     def get_right_trigger_status(self) -> float:
         """
@@ -264,13 +247,12 @@ class BetterController():
         out -> in
         ZR and ZL are mixed on NX_CONTROLLER and are either 1.0 or 0.0
         """
-        match self.__type:
-            case "NX_CONTROLLER":
-                if self.is_pressed(15):
-                    return 1.0
-                return 0.0
-            case _:
-                return self.control.get_axis(5)
+        if self.__type == "NX_CONTROLLER":
+            if self.is_pressed(15):
+                return 1.0
+            return 0.0
+        return self.control.get_axis(5)
+
 
     @property
     def name(self) -> str:

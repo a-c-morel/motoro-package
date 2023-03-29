@@ -4,6 +4,12 @@ from .game_base_object import GameBaseObject
 
 class GameRawEntity(GameBaseObject, ABC): #pylint: disable=too-many-instance-attributes
     """represent the proprety and base instance of an entity"""
+
+    def __new__(cls):
+        if cls is GameRawEntity:
+            raise TypeError("the abstarct class GameRawEntity can't be instancied.")
+        super().__new__(cls)
+
     def __init__(self, #pylint: disable=too-many-arguments
             coord,
             max_mometum_x : float = 4.0,
