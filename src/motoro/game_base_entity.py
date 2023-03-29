@@ -14,10 +14,10 @@ class GameBaseEntity(GameRawEntity, ABC):
     therfor you can never create an object with it !
     """
 
-    def __new__(cls):
+    def __new__(cls, *args, **kwargs):
         if cls is GameBaseEntity:
             raise TypeError("the abstarct class GameBaseEntity can't be instancied.")
-        super().__new__(cls)
+        super().__new__(*args, **kwargs)
 
     def __init__(self, coords : Iterable[int]) -> None:
         if not isinstance(coords, tuple) and not isinstance(coords, list):
