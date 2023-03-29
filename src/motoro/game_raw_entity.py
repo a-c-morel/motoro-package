@@ -8,7 +8,7 @@ class GameRawEntity(GameBaseObject, ABC): #pylint: disable=too-many-instance-att
     def __new__(cls, *args, **kwargs):
         if cls is GameRawEntity:
             raise TypeError("the abstarct class GameRawEntity can't be instancied.")
-        super().__new__(*args, **kwargs)
+        super().__new__(cls, *args, **kwargs)
 
     def __init__(self, #pylint: disable=too-many-arguments
             coord,
