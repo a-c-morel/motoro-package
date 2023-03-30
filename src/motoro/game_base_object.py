@@ -146,7 +146,7 @@ class GameBaseObject(ABC):
                     self.coords[1] = tmp[1].top-self.hitbox_dimension[1]
                     self.momentum_y = 0
                     self._hitbox_calculation()
-        if self.momentum_y <= 1 and self.momentum_y >= -1:
+        if abs(self.momentum_y) <= 1:
             self.momentum_y = 0.0
         self._old_rect_hitbox = self._rect_hitbox
         self._hitbox_calculation()
@@ -172,7 +172,7 @@ class GameBaseObject(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def render(self, screen : pygame.surface.Surface) -> None:
+    def render(self, screen : pygame.surface.Surface, offset_x : int = 0, offset_y : int = 0) -> None:
         """render the object on the screen"""
         raise NotImplementedError
 
