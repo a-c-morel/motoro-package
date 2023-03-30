@@ -16,7 +16,7 @@ class GameBaseEntity(GameRawEntity, ABC):
     def __new__(cls, *args, **kwargs):
         if cls is GameBaseEntity:
             raise TypeError("the abstarct class GameBaseEntity can't be instancied.")
-        super().__new__(cls, *args, **kwargs)
+        return super().__new__(cls, *args, **kwargs)
 
     def __init__(self, coords : Iterable[int]) -> None:
         if not isinstance(coords, tuple) and not isinstance(coords, list):
