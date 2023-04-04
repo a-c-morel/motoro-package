@@ -7,6 +7,8 @@ and can be installed with the following command :  \
 or
 `python -m pip install "motoro @ git+https://github.com/Noruaric/project-trophy-motoro-package@{version_tag}"`
 
+Crédit : Bastien Pinel
+
 Version note:
 
 0.0.1: first version of the package. lack of functunality  \
