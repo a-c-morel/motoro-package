@@ -3,6 +3,7 @@ import pygame
 from .game_base_object import GameBaseObject
 
 class camera:
+    """create a camera object for the game"""
     def __init__(self, screen: pygame.Surface, anchor_object: None | GameBaseObject = None) -> None:
         if not isinstance(anchor_object, GameBaseObject):
             raise TypeError(f'anchor should be GameBaseObject subclass got {type(anchor_object)}')
@@ -14,16 +15,28 @@ class camera:
         self._anchor = anchor_object
         self.display = screen
 
-    def go_left(self, val):
+    def go_left(self, val : int):
+        """make the camera go left (in pixel)"""
+        if isinstance(val, int):
+            raise TypeError(f"val should be a int got {type(val)}")
         self.coord_x -= val
 
     def go_right(self, val):
+        """make the camera go right (in pixel)"""
+        if isinstance(val, int):
+            raise TypeError(f"val should be a int got {type(val)}")
         self.coord_x += val
 
     def go_up(self, val):
+        """make the camera go up (in pixel)"""
+        if isinstance(val, int):
+            raise TypeError(f"val should be a int got {type(val)}")
         self.coord_y += val
 
     def go_down(self, val):
+        """make the camera go down (in pixel)"""
+        if isinstance(val, int):
+            raise TypeError(f"val should be a int got {type(val)}")
         self.coord_y -= val
 
     def __didplay_blits(self, elements : list[GameBaseObject]):
@@ -32,6 +45,7 @@ class camera:
             i.render(self.display, self.coord_x + shx, self.coord_y + shy)
 
     def display_update(self, elements : list[GameBaseObject]):
+        """update the display by bliting elements"""
         if self.anchor is not None:
             self.coord_x = self.offset_x + self.anchor.coords[0]
             self.coord_y = self.offset_y + self.anchor.coords[1]
@@ -45,6 +59,7 @@ class camera:
 
     @property
     def anchor(self):
+        """define the anchor that the camera will follow (not mendatory)"""
         return self._anchor
 
     @anchor.setter
