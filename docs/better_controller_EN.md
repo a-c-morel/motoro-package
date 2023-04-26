@@ -1,9 +1,11 @@
-class BetterController(builtins.object)
-   	BetterController(controller: pygame.joystick.Joystick) -&gt; None
+class BetterController(builtins.object) <br>
+BetterController(controller: pygame.joystick.Joystick) -&gt; None
 
 a class made to handle controllers with pygame in a more simple way
 
- 	Methods defined here:
+	Methods defined here:
+
+
 **\_\_init\_\_(self, controller: pygame.joystick.Joystick) -> None** <br>
 Initialize self.  <br>
 See help(type(self)) for accurate signature.
@@ -101,10 +103,14 @@ Static methods defined here:
 return a list of all the controllers connected to the computer<br>
 
 	Readonly properties defined here
+
+
 name<br>
 return the name of the controller<br><br>
 type<br>
 return the type (brand) of the controller<br>
 
 	Data
+
+
 CONTROLLERS_TYPES_LIST = ['NX_CONTROLLER', 'NX_PRO_CONTROLLER', 'X360_CONTROLLER', 'PS4_CONTROLLER', 'UNRECONIZABLE']
