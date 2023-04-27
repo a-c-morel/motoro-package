@@ -1,14 +1,14 @@
-[Go Back][index]
+[Retourner en arrière][index]
 
 module contenant la classe StageVariable<br>
 
 class StageVariable(abc.ABC)<br>
 StageVariable(*args, **kwargs)<br>
 
-Class representing the variables of the stage. <br>
+Classe représentant les variables de l'étape. <br>
 
 
-	Method resolution order:
+	Ordre de résolution des méthodes:
 
 
 **StageVariable**<br>
@@ -16,16 +16,18 @@ Class representing the variables of the stage. <br>
 **builtins.object**<br>
 
 
-	Class methods defined here:<br>
+	Méthodes de classe définies ici:<br>
 
 
 **\_\_init\_subclass\_\_**(*args, *\*kwargs) from abc.ABCMeta<br>
-This method is called when a class is subclassed.<br>
+Cette méthode est appelée lorsqu'une classe est sous-classée.<br>
 <br>
-The default implementation does nothing. It may be<br>
-overridden to extend subclasses.<br>
+L'implémentation par défaut ne fait rien. Elle peut être<br>
+redéfinie pour étendre les sous-classes.<br>
 
-	Static methods defined here:<br>
+	Méthodes statiques définies ici:<br>
+
+
 **\_\_annotations\_\_** = {'gravity_strengh': <class 'int'>, 'wind_cooldown': <class 'int'>, 'wind_strength': <class 'int'>, 'wind_time': <class 'int'>}<br>
 gravity_strengh = 1<br>
 wind_cooldown = 0<br>
