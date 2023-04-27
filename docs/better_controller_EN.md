@@ -1,3 +1,5 @@
+[Go Back][index]<br>
+
 class BetterController(builtins.object) <br>
 BetterController(controller: pygame.joystick.Joystick) -&gt; None
 
@@ -114,3 +116,5 @@ return the type (brand) of the controller<br>
 
 
 CONTROLLERS_TYPES_LIST = ['NX_CONTROLLER', 'NX_PRO_CONTROLLER', 'X360_CONTROLLER', 'PS4_CONTROLLER', 'UNRECONIZABLE']
+
+[index]: ./index_EN.md
