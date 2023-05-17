@@ -5,7 +5,7 @@ from .game_base_object import GameBaseObject
 class camera:
     """create a camera object for the game"""
     def __init__(self, screen: pygame.Surface, anchor_object: None | GameBaseObject = None) -> None:
-        if not isinstance(anchor_object, GameBaseObject):
+        if not isinstance(anchor_object, GameBaseObject) and not anchor_object is None:
             raise TypeError(f'anchor should be GameBaseObject subclass got {type(anchor_object)}')
         self.coord_x = 0
         self.coord_y = 0
